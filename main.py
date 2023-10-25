@@ -17,10 +17,19 @@ async def get_all_books() -> list:
   return BOOKS
 
 
-@app.get('/books/{book_title}')
-async def get_book(book_title: str) -> dict:
+@app.get('/books/title/{book_title}')
+async def get_book_by_title(book_title: str) -> dict:
   for book in BOOKS:
     if book['title'].casefold() == book_title.casefold():
+      return book
+
+  return {'message': 'Book not found'}
+
+
+@app.get('/books/author/{book_author}')
+async def get_book_by_author(book_author: str) -> dict:
+  for book in BOOKS:
+    if book['author'].casefold() == book_author.casefold():
       return book
 
   return {'message': 'Book not found'}
@@ -56,3 +65,11 @@ async def update_book(updated_book=Body()) -> None:
   for i in range(len(BOOKS)):
     if BOOKS[i]['title'].casefold() == updated_book['title'].casefold():
       BOOKS[i] = updated_book
+
+
+@app.delete('/books/delete_book/{book_title}')
+async def delete_book(book_title: str) -> None:
+  for i in range(len(BOOKS)):
+    if BOOKS[i]['title'].casefold() == book_title.casefold():
+      BOOKS.pop(i)
+      break
