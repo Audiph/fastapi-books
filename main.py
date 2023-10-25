@@ -1,24 +1,41 @@
 from fastapi import FastAPI, Body
+from typing import List
 
 app = FastAPI()
 
+
+class Book:
+  id: int
+  title: str
+  author: str
+  description: str
+  rating: int
+
+  def __init__(self, id, title, author, description, rating) -> None:
+    self.id = id
+    self.title = title
+    self.author = author
+    self.description = description
+    self.rating = rating
+
+
 BOOKS = [
-  {'title': 'Title One', 'author': 'Author One', 'category': 'science'},
-  {'title': 'Title Two', 'author': 'Author Two', 'category': 'science'},
-  {'title': 'Title Three', 'author': 'Author Three', 'category': 'history'},
-  {'title': 'Title Four', 'author': 'Author Four', 'category': 'math'},
-  {'title': 'Title Five', 'author': 'Author Five', 'category': 'math'},
-  {'title': 'Title Six', 'author': 'Author Six', 'category': 'math'}
+  Book(1, 'Computer Science Pro', 'Jeff', 'A very nice book!', 5),
+  Book(2, 'Be Fast with FastAPI', 'Jeff', 'A great book!', 5),
+  Book(3, 'Master Endpoints', 'Jeff', 'An awesome book!', 5),
+  Book(4, 'HP1', 'Author 1', 'Book Description', 2),
+  Book(5, 'HP2', 'Author 2', 'Book Description', 3),
+  Book(6, 'HP3', 'Author 3', 'Book Description', 1)
 ]
 
 
 @app.get('/books')
-async def get_all_books() -> list:
+async def get_all_books():
   return BOOKS
 
 
 @app.get('/books/title/{book_title}')
-async def get_book_by_title(book_title: str) -> dict:
+async def get_book_by_title(book_title: str) -> Book:
   for book in BOOKS:
     if book['title'].casefold() == book_title.casefold():
       return book
