@@ -12,13 +12,15 @@ class Book:
   author: str
   description: str
   rating: int
+  published_date: int
 
-  def __init__(self, id, title, author, description, rating) -> None:
+  def __init__(self, id, title, author, description, rating, published_date) -> None:
     self.id = id
     self.title = title
     self.author = author
     self.description = description
     self.rating = rating
+    self.published_date = published_date
 
 
 class BookRequest(BaseModel):
@@ -27,6 +29,7 @@ class BookRequest(BaseModel):
   author: str = Field(min_length=1)
   description: str = Field(min_length=1, max_length=100)
   rating: int = Field(gt=-1, lt=6)
+  published_date: int = Field(gt=0)
 
   class Config:
     json_schema_extra = {
@@ -40,12 +43,12 @@ class BookRequest(BaseModel):
 
 
 BOOKS = [
-  Book(1, 'Computer Science Pro', 'Jeff', 'A very nice book!', 5),
-  Book(2, 'Be Fast with FastAPI', 'Jeff', 'A great book!', 5),
-  Book(3, 'Master Endpoints', 'Jeff', 'An awesome book!', 5),
-  Book(4, 'HP1', 'Author 1', 'Book Description', 2),
-  Book(5, 'HP2', 'Author 2', 'Book Description', 3),
-  Book(6, 'HP3', 'Author 3', 'Book Description', 1)
+  Book(1, 'Computer Science Pro', 'Jeff', 'A very nice book!', 5, 2012),
+  Book(2, 'Be Fast with FastAPI', 'Jeff', 'A great book!', 5, 2011),
+  Book(3, 'Master Endpoints', 'Jeff', 'An awesome book!', 5, 2012),
+  Book(4, 'HP1', 'Author 1', 'Book Description', 2, 2012),
+  Book(5, 'HP2', 'Author 2', 'Book Description', 3, 2022),
+  Book(6, 'HP3', 'Author 3', 'Book Description', 1, 2023)
 ]
 
 
@@ -63,11 +66,21 @@ async def get_book_by_id(book_id: int):
   return {'message': 'Book not found'}
 
 
-@app.get('/books/')
+@app.get('/books/by_rating/')
 async def get_books_by_rating(book_rating: int):
   books = []
   for book in BOOKS:
     if book.rating == book_rating:
+      books.append(book)
+
+  return books
+
+
+@app.get('/books/by_published_date/')
+async def get_books_by_published_date(book_published_date: int):
+  books = []
+  for book in BOOKS:
+    if book.published_date == book_published_date:
       books.append(book)
 
   return books
@@ -124,10 +137,10 @@ async def update_book(book: BookRequest) -> None:
       BOOKS[i] = book
 
 
-@app.delete('/books/delete_book/{book_title}')
-async def delete_book(book_title: str) -> None:
+@app.delete('/books/delete_book/{book_id}')
+async def delete_book(book_id: int) -> None:
   for i in range(len(BOOKS)):
-    if BOOKS[i]['title'].casefold() == book_title.casefold():
+    if BOOKS[i].id == book_id:
       BOOKS.pop(i)
       break
 
