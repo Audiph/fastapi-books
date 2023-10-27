@@ -54,6 +54,15 @@ async def get_all_books():
   return BOOKS
 
 
+@app.get('/books/{book_id}')
+async def get_book_by_id(book_id: int):
+  for book in BOOKS:
+    if book.id == book_id:
+      return book
+
+  return {'message': 'Book not found'}
+
+
 @app.get('/books/title/{book_title}')
 async def get_book_by_title(book_title: str):
   for book in BOOKS:
