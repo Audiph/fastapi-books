@@ -63,6 +63,16 @@ async def get_book_by_id(book_id: int):
   return {'message': 'Book not found'}
 
 
+@app.get('/books/')
+async def get_books_by_rating(book_rating: int):
+  books = []
+  for book in BOOKS:
+    if book.rating == book_rating:
+      books.append(book)
+
+  return books
+
+
 @app.get('/books/title/{book_title}')
 async def get_book_by_title(book_title: str):
   for book in BOOKS:
