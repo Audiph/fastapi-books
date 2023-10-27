@@ -118,10 +118,10 @@ async def create_Book(book_request: BookRequest):
 
 
 @app.put('/books/update_book')
-async def update_book(updated_book=Body()) -> None:
+async def update_book(book: BookRequest) -> None:
   for i in range(len(BOOKS)):
-    if BOOKS[i]['title'].casefold() == updated_book['title'].casefold():
-      BOOKS[i] = updated_book
+    if BOOKS[i].id == book.id:
+      BOOKS[i] = book
 
 
 @app.delete('/books/delete_book/{book_title}')
