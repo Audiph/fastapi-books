@@ -87,42 +87,42 @@ async def get_books_by_published_date(book_published_date: int):
   return books
 
 
-@app.get('/books/title/{book_title}')
-async def get_book_by_title(book_title: str):
-  for book in BOOKS:
-    if book['title'].casefold() == book_title.casefold():
-      return book
+# @app.get('/books/title/{book_title}')
+# async def get_book_by_title(book_title: str):
+#   for book in BOOKS:
+#     if book['title'].casefold() == book_title.casefold():
+#       return book
 
-  return {'message': 'Book not found'}
-
-
-@app.get('/books/author/{book_author}')
-async def get_book_by_author(book_author: str) -> dict:
-  for book in BOOKS:
-    if book['author'].casefold() == book_author.casefold():
-      return book
-
-  return {'message': 'Book not found'}
+#   return {'message': 'Book not found'}
 
 
-@app.get('/books/')
-async def get_books_by_category(category: str) -> list:
-  books = []
-  for book in BOOKS:
-    if book['category'].casefold() == category.casefold():
-      books.append(book)
+# @app.get('/books/author/{book_author}')
+# async def get_book_by_author(book_author: str) -> dict:
+#   for book in BOOKS:
+#     if book['author'].casefold() == book_author.casefold():
+#       return book
 
-  return books
+#   return {'message': 'Book not found'}
 
 
-@app.get('/books/{book_author}/')
-async def get_books_by_author_and_category(book_author: str, category: str) -> list:
-  books = []
-  for book in BOOKS:
-    if book['author'].casefold() == book_author.casefold() and book['category'].casefold() == category.casefold():
-      books.append(book)
+# @app.get('/books/')
+# async def get_books_by_category(category: str) -> list:
+#   books = []
+#   for book in BOOKS:
+#     if book['category'].casefold() == category.casefold():
+#       books.append(book)
 
-  return books
+#   return books
+
+
+# @app.get('/books/{book_author}/')
+# async def get_books_by_author_and_category(book_author: str, category: str) -> list:
+#   books = []
+#   for book in BOOKS:
+#     if book['author'].casefold() == book_author.casefold() and book['category'].casefold() == category.casefold():
+#       books.append(book)
+
+#   return books
 
 
 @app.post('/books/create_book')
