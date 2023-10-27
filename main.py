@@ -37,7 +37,8 @@ class BookRequest(BaseModel):
         'title': 'A new book',
         'author': 'Jeff',
         'description': 'A new description of a book',
-        'rating': 5
+        'rating': 5,
+        'published_date': 2023
       }
     }
 
